@@ -173,7 +173,7 @@ class SharedMediaImageCandidate(TypesBaseModel):
 
     estimated_scans_sizes: List[int] = []
     height: int
-    scans_profile: str
+    scans_profile: Optional[str] = None
     url: str
     width: int
 
@@ -181,24 +181,24 @@ class SharedMediaImageCandidate(TypesBaseModel):
 class ScrubberSpritesheetInfo(TypesBaseModel):
     """Spritesheet information for video scrubbing"""
 
-    file_size_kb: int
-    max_thumbnails_per_sprite: int
-    rendered_width: int
-    sprite_height: int
-    sprite_urls: List[str]
-    sprite_width: int
-    thumbnail_duration: float
-    thumbnail_height: int
-    thumbnail_width: int
-    thumbnails_per_row: int
-    total_thumbnail_num_per_sprite: int
-    video_length: float
+    file_size_kb: Optional[int] = None
+    max_thumbnails_per_sprite: Optional[int] = None
+    rendered_width: Optional[int] = None
+    sprite_height: Optional[int] = None
+    sprite_urls: List[str] = []
+    sprite_width: Optional[int] = None
+    thumbnail_duration: Optional[float] = None
+    thumbnail_height: Optional[int] = None
+    thumbnail_width: Optional[int] = None
+    thumbnails_per_row: Optional[int] = None
+    total_thumbnail_num_per_sprite: Optional[int] = None
+    video_length: Optional[float] = None
 
 
 class ScrubberSpritesheetInfoCandidates(TypesBaseModel):
     """Container for spritesheet information candidates"""
 
-    default: ScrubberSpritesheetInfo
+    default: Optional[ScrubberSpritesheetInfo] = None
 
 
 class AdditionalCandidates(TypesBaseModel):
@@ -236,13 +236,13 @@ class ClipsAdditionalAudioInfo(TypesBaseModel):
     """Additional audio information for clips"""
 
     additional_audio_username: Optional[str] = None
-    audio_reattribution_info: AudioReattributionInfo
+    audio_reattribution_info: Optional[AudioReattributionInfo] = None
 
 
 class ClipsAudioRankingInfo(TypesBaseModel):
     """Audio ranking information for clips"""
 
-    best_audio_cluster_id: str
+    best_audio_cluster_id: Optional[str] = None
 
 
 class ClipsBrandedContentTagInfo(TypesBaseModel):
@@ -283,7 +283,7 @@ class ClipsConsumptionInfo(TypesBaseModel):
     display_media_id: Optional[str] = None
     is_bookmarked: bool = False
     is_trending_in_clips: bool = False
-    should_mute_audio_reason: str = ""
+    should_mute_audio_reason: Optional[str] = ""
     should_mute_audio_reason_type: Optional[str] = None
     user_notes: Optional[str] = None
 
@@ -291,34 +291,34 @@ class ClipsConsumptionInfo(TypesBaseModel):
 class ClipsFbDownstreamUseXpostMetadata(TypesBaseModel):
     """Facebook downstream use xpost metadata for clips"""
 
-    downstream_use_xpost_deny_reason: str = "NONE"
+    downstream_use_xpost_deny_reason: Optional[str] = "NONE"
 
 
 class ClipsIgArtist(TypesBaseModel):
     """Instagram artist information for clips original sound"""
 
-    pk: int
-    pk_id: str
-    id: str
-    username: str
-    full_name: str
+    pk: Optional[int] = None
+    pk_id: Optional[str] = None
+    id: Optional[str] = None
+    username: Optional[str] = None
+    full_name: Optional[str] = None
     is_private: bool = False
     is_verified: bool = False
     profile_pic_id: Optional[str] = None
-    profile_pic_url: str
-    strong_id__: str
+    profile_pic_url: Optional[str] = None
+    strong_id__: Optional[str] = None
 
 
 class ClipsOriginalSoundInfo(TypesBaseModel):
     """Original sound information for clips"""
 
     allow_creator_to_rename: bool = True
-    audio_asset_id: int
+    audio_asset_id: Optional[int] = None
     attributed_custom_audio_asset_id: Optional[int] = None
     can_remix_be_shared_to_fb: bool = True
     can_remix_be_shared_to_fb_expansion: bool = True
-    dash_manifest: str
-    duration_in_ms: int
+    dash_manifest: Optional[str] = None
+    duration_in_ms: Optional[int] = None
     formatted_clips_media_count: Optional[str] = None
     hide_remixing: bool = False
     is_audio_automatically_attributed: bool = False
@@ -330,23 +330,23 @@ class ClipsOriginalSoundInfo(TypesBaseModel):
     is_xpost_from_fb: bool = False
     music_canonical_id: Optional[str] = None
     oa_owner_is_music_artist: bool = False
-    original_audio_subtype: str = "default"
-    original_audio_title: str = "Original audio"
-    original_media_id: int
-    progressive_download_url: str
+    original_audio_subtype: Optional[str] = "default"
+    original_audio_title: Optional[str] = "Original audio"
+    original_media_id: Optional[int] = None
+    progressive_download_url: Optional[str] = None
     should_mute_audio: bool = False
-    time_created: int
+    time_created: Optional[int] = None
     trend_rank: Optional[int] = None
     previous_trend_rank: Optional[int] = None
     overlap_duration_in_ms: Optional[int] = None
     audio_asset_start_time_in_ms: Optional[int] = None
-    ig_artist: ClipsIgArtist
+    ig_artist: Optional[ClipsIgArtist] = None
     audio_filter_infos: List[dict] = []
     audio_parts: List[dict] = []
     audio_parts_by_filter: List[dict] = []
-    consumption_info: ClipsConsumptionInfo
+    consumption_info: Optional[ClipsConsumptionInfo] = None
     xpost_fb_creator_info: Optional[dict] = None
-    fb_downstream_use_xpost_metadata: ClipsFbDownstreamUseXpostMetadata
+    fb_downstream_use_xpost_metadata: Optional[ClipsFbDownstreamUseXpostMetadata] = None
 
 
 class ClipsMetadata(TypesBaseModel):
