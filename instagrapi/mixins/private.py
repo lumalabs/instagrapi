@@ -80,6 +80,8 @@ class PrivateRequestMixin:
     change_password_handler = manual_change_password
     private_request_logger = logging.getLogger("private_request")
     request_timeout = 1
+    http_connect_timeout = 5
+    http_read_timeout = 30
     domain = config.API_DOMAIN
     last_response = None
     last_json = {}
@@ -109,6 +111,8 @@ class PrivateRequestMixin:
         self.email = kwargs.pop("email", None)
         self.phone_number = kwargs.pop("phone_number", None)
         self.request_timeout = kwargs.pop("request_timeout", self.request_timeout)
+        self.http_connect_timeout = kwargs.pop("http_connect_timeout", self.http_connect_timeout)
+        self.http_read_timeout = kwargs.pop("http_read_timeout", self.http_read_timeout)
         super().__init__(*args, **kwargs)
 
     def small_delay(self):
@@ -338,12 +342,14 @@ class PrivateRequestMixin:
                     if extra_sig:
                         data += "&".join(extra_sig)
                 response = self.private.post(
-                    api_url, data=data, params=params, proxies=self.private.proxies
+                    api_url, data=data, params=params, proxies=self.private.proxies,
+                    timeout=(self.http_connect_timeout, self.http_read_timeout),
                 )
             else:  # GET
                 self.private.headers.pop("Content-Type", None)
                 response = self.private.get(
-                    api_url, params=params, proxies=self.private.proxies
+                    api_url, params=params, proxies=self.private.proxies,
+                    timeout=(self.http_connect_timeout, self.http_read_timeout),
                 )
             self.logger.debug(
                 "private_request %s: %s (%s)",
@@ -472,6 +478,10 @@ class PrivateRequestMixin:
                 self.logger.warning("Status 408: Request Timeout")
                 raise ClientRequestTimeout(e, response=e.response, **last_json)
             raise ClientError(e, response=e.response, **last_json)
+        except requests.Timeout as e:
+            raise ClientRequestTimeout(
+                "{e.__class__.__name__} {e}".format(e=e)
+            )
         except requests.ConnectionError as e:
             raise ClientConnectionError("{e.__class__.__name__} {e}".format(e=e))
         if last_json.get("status") == "fail":
